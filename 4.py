@@ -17,6 +17,7 @@ def switch_demo(opcao):
 def imprimirNumeros():
     for i in range(1, 5):
         print(i)
+    
         
 def inserirDados():
     print("Inserindo Dados")
