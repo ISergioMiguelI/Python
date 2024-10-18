@@ -1,1 +1,1 @@
-print ("this costs " + str(3) + " dollars")
+print( “john”== “james” and 7!=8 ) 
