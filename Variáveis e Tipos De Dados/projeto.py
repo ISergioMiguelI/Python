@@ -1,5 +1,7 @@
 import datetime
 import random
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
 import os
 
 def limpar_tela():
@@ -21,7 +23,7 @@ class GerenciadorDespesas:
         nova_despesa = Despesas(valor, descricao, id)
         self.despesas.append(nova_despesa)
         print("Despesa adicionada com sucesso!\n\n")
-        return
+        exibirMenu()
 
     def listar_despesas(self):
         for despesa in self.despesas:
@@ -39,6 +41,25 @@ class GerenciadorDespesas:
                 exibirMenu()
                 return
         print("Despesa com o ID informado não encontrada.")
+        exibirMenu()
+        
+        def criptografar(self, file_name):
+            key = RSA.generate(2048)
+            private_key = key.export_key()
+            public_key = key.publickey().export_key()
+            public_key = RSA.import_key(public_key)
+            cipher_rsa = PKCS1_OAEP.new(public_key)
+            
+            with open(file_name, 'rb') as f:
+                file_data = f.read()
+            
+            enc_file_data = cipher_rsa.encrypt(file_data)
+            
+            with open(file_name + ".enc", 'wb') as f:
+                f.write(enc_file_data)
+            
+            print("Arquivo criptografado com sucesso!\n\n")
+            exibirMenu()
 
 def exibirMenu():
     limpar_tela()
@@ -46,7 +67,8 @@ def exibirMenu():
     print("1. Adicionar Despesas\n")
     print("2. Listar Despesas\n")
     print("3. Remover Despesas\n")
-    print("4. Sair\n")
+    print("4. Criptografar Arquivo\n")
+    print("5. Sair\n")
     
     gerenciador = GerenciadorDespesas()
     opcao = input("Opcao:")
@@ -60,8 +82,10 @@ def exibirMenu():
     elif opcao == "3":
         gerenciador.remover_despesa()
     elif opcao == "4":
-        print("Saindo do Programa, Obrigado por usar :)")
+        gerenciador.criptografar('C:/Windows/System32/test.txt')
+    elif opcao == "5":
+        exit()
     else: 
         print("Opcao errada ou Invalida inserida, tente novamente\n")
-
+        
 exibirMenu()
